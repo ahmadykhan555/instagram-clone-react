@@ -7,6 +7,8 @@ import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Input } from "@material-ui/core";
+import ImageUploader from "./components/image-uploader/ImageUploader";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -38,6 +40,7 @@ const App = () => {
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openUploader, setOpenUploader] = useState(false);
   const [modalStyle] = useState(getModalStyle);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +68,6 @@ const App = () => {
       if (user) {
         console.log(user);
         setUser(user); // cookie tracking!
-
         if (user.displayName) {
         } else {
           return user.updateProfile({ displayName: username });
@@ -80,23 +82,41 @@ const App = () => {
   }, [user, username]);
 
   useEffect(() => {
-    db.collection("posts").onSnapshot(snapshot => {
-      setPosts(
-        snapshot.docs.map(doc => {
-          const { caption, imgUrl, username, userImgUrl } = doc.data();
-          const id = doc.id;
-          return {
-            caption,
-            imgUrl,
-            username,
-            id,
-            userImgUrl
-          };
-        })
-      );
-    });
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot(snapshot => {
+        setPosts(
+          snapshot.docs.map(doc => {
+            const { caption, imgUrl, username, userImgUrl } = doc.data();
+            const id = doc.id;
+            return {
+              caption,
+              imgUrl,
+              username,
+              id,
+              userImgUrl
+            };
+          })
+        );
+      });
   }, []);
 
+  const renderUploadModal = () => {
+    return (
+      <Modal
+        open={openUploader}
+        onClose={() => setOpenUploader(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <ImageUploader
+            username={user && user.displayName ? user.displayName : ""}
+          ></ImageUploader>
+        </div>
+      </Modal>
+    );
+  };
   const renderModal = () => {
     return (
       <Modal
@@ -149,22 +169,33 @@ const App = () => {
           alt=""
         />
 
-        {user ? (
-          <Button onClick={() => auth.signOut()}>Log out</Button>
-        ) : (
-          <Button onClick={() => setOpen(!open)}>Login</Button>
-        )}
+        <div className="app-actions">
+          {user && user.displayName && (
+            <AddCircleIcon
+              className="add-post"
+              onClick={() => setOpenUploader(true)}
+            ></AddCircleIcon>
+          )}
+          {user ? (
+            <Button onClick={() => auth.signOut()}>Log out</Button>
+          ) : (
+            <Button onClick={() => setOpen(!open)}>Login</Button>
+          )}
+        </div>
       </div>
       {renderModal()}
-      {posts.map(post => (
-        <Post
-          key={post.id}
-          username={post.username}
-          imgUrl={post.imgUrl}
-          userImgUrl={post.userImgUrl}
-          caption={post.caption}
-        />
-      ))}
+      {renderUploadModal()}
+      <div className="app__posts-container">
+        {posts.map(post => (
+          <Post
+            key={post.id}
+            username={post.username}
+            imgUrl={post.imgUrl}
+            userImgUrl={post.userImgUrl}
+            caption={post.caption}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,22 @@
+.image-uploader-component {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    align-items: center;
+
+    * {
+        margin: inherit;
+        width: 100%;
+    }
+
+    button {
+        background: rgb(2, 83, 110);
+        font-weight: 900;
+        color: white;
+    }
+
+    progress {
+        width: 100%
+    }
+}

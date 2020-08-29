@@ -48,7 +48,8 @@ const ImageUploader = ({ username }) => {
               imgUrl,
               timestamp: +new Date(),
               username,
-              userImgUrl: imgUrl
+              userImgUrl: imgUrl,
+              likes: 0
             });
             setProgress(0);
             setCaption("");

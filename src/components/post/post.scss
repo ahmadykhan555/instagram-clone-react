@@ -1,20 +1,38 @@
 .post {
+    $padding: 16px;
     border: 1px solid lightgray;
     max-width: 550px;
     background-color: white;
     margin-bottom: 25px;
 
+    h5 {
+        font-weight: normal;
+    }
+
     &:first-child {
-        margin-top: 15px;
+        // margin-top: 15px;
     }
 
     &__header {
         display: flex;
         align-items: center;
+        padding-right: $padding;
+
+        .user-details {
+            flex: 1;
+
+            &__location {
+                margin-top: 2px;
+                font-weight: normal;
+            }
+        }
     }
 
     &__avatar {
         margin: 10px;
+
+        width: 32px !important;
+        height: 32px !important;
     }
 
     &__img {
@@ -24,8 +42,69 @@
         border-bottom: 1px solid lightgray;
     }
 
+    &__interact {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $padding $padding 0;
+
+        svg {
+            opacity: 0.65;
+
+            &:nth-child(2) {
+                margin: 0 10px;
+            }
+
+            &:nth-child(3) {}
+
+            &:nth-child(4) {
+                font-size: 34px;
+            }
+        }
+
+        &--right {
+            svg {
+                font-size: 30px;
+                opacity: 0.8;
+            }
+        }
+    }
+
+    &__likes-count {
+        padding: 0 $padding;
+        margin-bottom: 10px;
+    }
+
+    &__comment-box {
+        display: flex;
+
+        input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-top: 1px solid lightgray
+        }
+
+        button {
+            border-top: 1px solid lightgray;
+            flex: 0;
+            border-radius: 0;
+            color: #6082a3;
+            background-color: transparent;
+        }
+    }
+
+    .post-comments {
+        padding: 0 $padding;
+        margin: 10px 0;
+
+        .post-comment {
+            margin: inherit;
+        }
+    }
+
     &__text {
         font-weight: normal;
-        padding: 20px;
+        padding: 0 $padding;
     }
 }

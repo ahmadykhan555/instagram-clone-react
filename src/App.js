@@ -8,7 +8,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Input } from "@material-ui/core";
 import ImageUploader from "./components/image-uploader/ImageUploader";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+
+import AppHeader from "./components/app-header/AppHeader";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -162,27 +163,13 @@ const App = () => {
   return (
     <div className="app">
       {/* Sticky Header */}
-      <div className="app__header">
-        <img
-          className="app__header__image"
-          src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-          alt=""
-        />
-
-        <div className="app-actions">
-          {user && user.displayName && (
-            <AddCircleIcon
-              className="add-post"
-              onClick={() => setOpenUploader(true)}
-            ></AddCircleIcon>
-          )}
-          {user ? (
-            <Button onClick={() => auth.signOut()}>Log out</Button>
-          ) : (
-            <Button onClick={() => setOpen(!open)}>Login</Button>
-          )}
-        </div>
-      </div>
+      <AppHeader
+        user={user}
+        setOpenUploader={setOpenUploader}
+        auth={auth}
+        open={open}
+        setOpen={setOpen}
+      ></AppHeader>
       {renderModal()}
       {renderUploadModal()}
       <div className="app__posts-container">

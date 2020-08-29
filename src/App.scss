@@ -9,6 +9,13 @@
     display: flex;
     flex-direction: column;
 
+    button,
+    svg {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     &__posts-container {
         margin: 20px auto auto;
         display: flex;

@@ -89,7 +89,14 @@ const App = () => {
       .onSnapshot(snapshot => {
         setPosts(
           snapshot.docs.map(doc => {
-            const { caption, imgUrl, username, userImgUrl, likes } = doc.data();
+            const {
+              caption,
+              imgUrl,
+              username,
+              userImgUrl,
+              likes,
+              location
+            } = doc.data();
             const id = doc.id;
             return {
               caption,
@@ -97,7 +104,8 @@ const App = () => {
               username,
               id,
               userImgUrl,
-              likes
+              likes,
+              location
             };
           })
         );
@@ -186,6 +194,7 @@ const App = () => {
               caption={post.caption}
               likes={post.likes}
               postId={post.id}
+              location={post.location}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
 import TurnedInNotOutlinedIcon from "@material-ui/icons/TurnedInNotOutlined";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import { db } from "../../firebase";
 import { Button } from "@material-ui/core";
 
@@ -16,7 +17,8 @@ const Post = ({
   caption,
   likes,
   postId,
-  signedInUser
+  signedInUser,
+  location
 }) => {
   const [likesCount, setLikesCount] = useState(likes);
   const [liked, setLiked] = useState(false);
@@ -36,6 +38,27 @@ const Post = ({
     setComment("");
   };
 
+  const handlePostLike = () => {
+    if (!liked) {
+      setLikesCount(likesCount + 1);
+      setLiked(true);
+    } else {
+      setLikesCount(likesCount - 1);
+      setLiked(false);
+    }
+  };
+
+  useEffect(() => {
+    updatePost();
+  }, [likesCount]);
+
+  const updatePost = () => {
+    db.collection("posts")
+      .doc(postId)
+      .update({ likes: likesCount })
+      .catch(err => console.error(err));
+  };
+
   useEffect(() => {
     if (postId) {
       db.collection("posts")
@@ -49,20 +72,13 @@ const Post = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (liked) {
-      setLikesCount(likesCount + 1);
-    } else {
-      setLikesCount(likesCount - 1);
-    }
-  }, [liked]);
   return (
     <div className="post">
       <div className="post__header">
         <Avatar className="post__avatar" src={userImgUrl} alt={username} />
         <div className="user-details">
           <h5 className="user-details__username">{username}</h5>
-          <h6 className="user-details__location">Real Madrid, Spain</h6>
+          <h6 className="user-details__location">{location}</h6>
         </div>
         <div className="post__actions">
           <MoreHorizIcon></MoreHorizIcon>
@@ -71,9 +87,11 @@ const Post = ({
       <img className="post__img" src={imgUrl} alt="" />
       <div className="post__interact">
         <div className="post__interact--left">
-          <FavoriteBorderIcon
-            onClick={() => setLiked(!liked)}
-          ></FavoriteBorderIcon>
+          {liked ? (
+            <FavoriteIcon onClick={handlePostLike}></FavoriteIcon>
+          ) : (
+            <FavoriteBorderIcon onClick={handlePostLike}></FavoriteBorderIcon>
+          )}
           <ModeCommentOutlinedIcon></ModeCommentOutlinedIcon>
           <SendOutlinedIcon></SendOutlinedIcon>
         </div>
@@ -81,14 +99,16 @@ const Post = ({
           <TurnedInNotOutlinedIcon></TurnedInNotOutlinedIcon>
         </div>
       </div>
-      <h5 className="post__likes-count">{likesCount || 0} likes</h5>
+      <h5 className="post__likes-count">
+        {likesCount < 0 ? 0 : likesCount} likes
+      </h5>
       <h5 className="post__text">
         <strong>{username}</strong> {caption}
       </h5>
       {comments.length > 0 && (
         <div className="post-comments">
           {comments.map(comment => (
-            <h5 class="post-comment">
+            <h5 className="post-comment">
               <strong>{comment.username}</strong> {comment.text}
             </h5>
           ))}

@@ -21,6 +21,10 @@
         .user-details {
             flex: 1;
 
+            &__username {
+                font-weight: bold
+            }
+
             &__location {
                 margin-top: 2px;
                 font-weight: normal;
@@ -73,6 +77,7 @@
     &__likes-count {
         padding: 0 $padding;
         margin-bottom: 10px;
+        font-weight: bold !important;
     }
 
     &__comment-box {

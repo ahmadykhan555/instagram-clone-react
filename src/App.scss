@@ -10,7 +10,12 @@
     flex-direction: column;
 
     &__posts-container {
-        margin: 25px auto auto;
+        margin: 20px auto auto;
+        display: flex;
+
+        &--right {
+            margin-left: 20px;
+        }
     }
 }
 

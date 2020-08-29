@@ -10,6 +10,7 @@ import { Input } from "@material-ui/core";
 import ImageUploader from "./components/image-uploader/ImageUploader";
 
 import AppHeader from "./components/app-header/AppHeader";
+import ProfileSideSection from "./components/profile-side-section/ProfileSideSection";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -88,14 +89,15 @@ const App = () => {
       .onSnapshot(snapshot => {
         setPosts(
           snapshot.docs.map(doc => {
-            const { caption, imgUrl, username, userImgUrl } = doc.data();
+            const { caption, imgUrl, username, userImgUrl, likes } = doc.data();
             const id = doc.id;
             return {
               caption,
               imgUrl,
               username,
               id,
-              userImgUrl
+              userImgUrl,
+              likes
             };
           })
         );
@@ -173,15 +175,23 @@ const App = () => {
       {renderModal()}
       {renderUploadModal()}
       <div className="app__posts-container">
-        {posts.map(post => (
-          <Post
-            key={post.id}
-            username={post.username}
-            imgUrl={post.imgUrl}
-            userImgUrl={post.userImgUrl}
-            caption={post.caption}
-          />
-        ))}
+        <div className="app__posts-container--left">
+          {posts.map(post => (
+            <Post
+              signedInUser={user}
+              key={post.id}
+              username={post.username}
+              imgUrl={post.imgUrl}
+              userImgUrl={post.userImgUrl}
+              caption={post.caption}
+              likes={post.likes}
+              postId={post.id}
+            />
+          ))}
+        </div>
+        <div className="app__posts-container--right">
+          <ProfileSideSection></ProfileSideSection>
+        </div>
       </div>
     </div>
   );

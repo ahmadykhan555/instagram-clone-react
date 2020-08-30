@@ -1,4 +1,4 @@
-# Instagram Clone With React & Redux
+# Instagram Clone With React & Redux ![Hits](https://views.whatilearened.today/views/github/ahmadykhan555/instagram-clone-react.svg)
 
 <img src="https://user-images.githubusercontent.com/41294736/91647139-95e0dd00-ea70-11ea-9767-3583f4bf15f4.png" />
 

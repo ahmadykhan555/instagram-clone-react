@@ -9,35 +9,5 @@
     display: flex;
     flex-direction: column;
 
-    button,
-    svg {
-        &:hover {
-            cursor: pointer;
-        }
-    }
 
-    &__posts-container {
-        margin: 20px auto auto;
-        display: flex;
-
-        &--right {
-            margin-left: 20px;
-        }
-    }
-}
-
-.insta-modal-body {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        div {
-            width: 100%;
-        }
-    }
 }

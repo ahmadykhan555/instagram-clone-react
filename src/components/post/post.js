@@ -10,16 +10,9 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import { db } from "../../firebase";
 import { Button } from "@material-ui/core";
 
-const Post = ({
-  userImgUrl,
-  imgUrl,
-  username,
-  caption,
-  likes,
-  postId,
-  signedInUser,
-  location
-}) => {
+const Post = ({ post, appUser }) => {
+  const { userImgUrl, imgUrl, username, caption, likes, id, location } = post;
+  debugger;
   const [likesCount, setLikesCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const [comment, setComment] = useState("");
@@ -28,10 +21,10 @@ const Post = ({
   const postComment = event => {
     event.preventDefault();
     db.collection("posts")
-      .doc(postId)
+      .doc(id)
       .collection("comments")
       .add({
-        username: signedInUser.displayName,
+        username: appUser.displayName,
         text: comment,
         timestamp: +new Date()
       });
@@ -54,15 +47,15 @@ const Post = ({
 
   const updatePost = () => {
     db.collection("posts")
-      .doc(postId)
+      .doc(id)
       .update({ likes: likesCount })
       .catch(err => console.error(err));
   };
 
   useEffect(() => {
-    if (postId) {
+    if (id) {
       db.collection("posts")
-        .doc(postId)
+        .doc(id)
         .collection("comments")
         .orderBy("timestamp")
         .onSnapshot(snapshot => {
@@ -123,7 +116,7 @@ const Post = ({
             value={comment}
             onChange={event => setComment(event.target.value)}
           ></input>
-          <Button onClick={postComment} disabled={!signedInUser || !comment}>
+          <Button onClick={postComment} disabled={!appUser || !comment}>
             Post
           </Button>
         </form>

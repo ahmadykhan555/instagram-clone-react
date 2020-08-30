@@ -1,0 +1,18 @@
+.app {
+    height: 100%;
+    width: 100%;
+    display: flex;
+
+    button,
+    svg {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__content {
+
+        display: flex;
+        margin: 20px auto auto;
+    }
+}
